@@ -283,6 +283,18 @@ module.exports = function (grunt) {
           browsers: grunt.file.readYAML('test-infra/sauce_browsers.yml')
         }
       }
+    },
+
+    cmq: {
+      options: {
+        log: true
+      },
+      all: {
+        expand: true,
+        cwd: 'dist/css',
+        src: '*.css',
+        dest: 'dist/css'
+      }
     }
   });
 
@@ -316,7 +328,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-js', ['concat', 'uglify']);
 
   // CSS distribution task.
-  grunt.registerTask('dist-css', ['less', 'csscomb', 'usebanner']);
+  grunt.registerTask('dist-css', ['less:compileCore', 'less:compileTheme', 'cmq', 'csscomb', 'less:minify', 'usebanner']);
 
   // Docs distribution task.
   grunt.registerTask('dist-docs', ['copy:docs']);
